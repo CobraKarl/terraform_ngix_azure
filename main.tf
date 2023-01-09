@@ -24,6 +24,7 @@ resource "azurerm_resource_group" "rg" {
 
 }
 
+# Create VNET
 resource "azurerm_virtual_network" "vnet" {
   name                = "vnet"
   location            = var.location
@@ -35,6 +36,7 @@ resource "azurerm_virtual_network" "vnet" {
 
 }
 
+# Create Subnets
 resource "azurerm_subnet" "subnet1" {
   name                 = "subnet1"
   resource_group_name  = var.RGName
@@ -98,6 +100,7 @@ resource "azurerm_network_security_group" "allowedports" {
   }
 }
 
+# Create Public IP
 resource "azurerm_public_ip" "public_ip" {
   name                = "public_ip"
   resource_group_name = var.RGName
@@ -109,6 +112,7 @@ resource "azurerm_public_ip" "public_ip" {
 
 }
 
+# Create NIC
 resource "azurerm_network_interface" "nic" {
   name                = "nic"
   resource_group_name = var.RGName
@@ -125,12 +129,13 @@ resource "azurerm_network_interface" "nic" {
 
 }
 
+# Create Linux VM
 resource "azurerm_linux_virtual_machine" "nginx" {
-  size                  = var.instance_size
-  name                  = "nginx_webserver"
-  resource_group_name   = var.RGName
-  location              = var.location
-  custom_data           = base64encode(file("scripts/init.sh"))
+  size                = var.instance_size
+  name                = "nginx_webserver"
+  resource_group_name = var.RGName
+  location            = var.location
+  custom_data         = base64encode(file("scripts/init.sh"))
   network_interface_ids = [
     azurerm_network_interface.nic.id
   ]
