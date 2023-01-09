@@ -98,3 +98,58 @@ resource "azurerm_network_security_group" "allowedports" {
   }
 }
 
+resource "azurerm_public_ip" "public_ip" {
+  name                = "public_ip"
+  resource_group_name = var.RGName
+  location            = var.location
+  allocation_method   = "Dynamic"
+  depends_on = [
+    azurerm_resource_group.rg
+  ]
+
+}
+
+resource "azurerm_network_interface" "nic" {
+  name                = "nic"
+  resource_group_name = var.RGName
+  location            = var.location
+  ip_configuration {
+    name                          = "internal"
+    private_ip_address_allocation = "Dynamic"
+    subnet_id                     = azurerm_subnet.subnet1.id
+    public_ip_address_id          = azurerm_public_ip.public_ip.id
+  }
+  depends_on = [
+    azurerm_resource_group.rg
+  ]
+
+}
+
+resource "azurerm_linux_virtual_machine" "nginx" {
+  size                  = var.instance_size
+  name                  = "nginx_webserver"
+  resource_group_name   = var.RGName
+  location              = var.location
+  custom_data           = base64encode(file("scripts/init.sh"))
+  network_interface_ids = ["azurerm_network_interface.RGName.id"]
+  os_disk {
+    name                 = "nginxdisk01"
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+    create_option        = "FromImage"
+  }
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
+    version   = "latest"
+  }
+  computer_name                   = "nginx"
+  admin_username                  = var.admin_username
+  admin_password                  = var.admin_password
+  disable_password_authentication = false
+  depends_on = [
+    azurerm_resource_group.rg
+  ]
+
+}
