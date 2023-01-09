@@ -131,7 +131,7 @@ resource "azurerm_linux_virtual_machine" "nginx" {
   resource_group_name   = var.RGName
   location              = var.location
   custom_data           = base64encode(file("scripts/init.sh"))
-  network_interface_ids = ["azurerm_network_interface.RGName.id"]
+  network_interface_ids = ["azurerm_network_interface.nic.id"]
   os_disk {
     name                 = "nginxdisk01"
     caching              = "ReadWrite"
