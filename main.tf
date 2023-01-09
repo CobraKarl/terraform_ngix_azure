@@ -22,7 +22,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "vnet" {
-    source = "vnet.tf"
+    source = "./modules/vnet.tf"
     depends_on = [
       azurerm_resource_group.rg
     ]
