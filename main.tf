@@ -132,7 +132,7 @@ resource "azurerm_linux_virtual_machine" "nginx" {
   location              = var.location
   custom_data           = base64encode(file("scripts/init.sh"))
   network_interface_ids = [
-    network_interface_ids.nic.id
+    azurerm_network_interface.nic.id
   ]
   os_disk {
     name                 = "nginxdisk01"
