@@ -12,6 +12,8 @@ provider "azurerm" {
     client_id = var.clientId
     client_secret = var.clientSecret
     tenant_id = var.tenantId
+    RGName = var.RGName
+    location = var.location
     features {
       
     } 
@@ -25,7 +27,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "vnet" {
-    source = "./modules"
+    source = "./module-1"
     depends_on = [
       azurerm_resource_group.rg
     ]
