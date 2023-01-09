@@ -136,7 +136,7 @@ resource "azurerm_linux_virtual_machine" "nginx" {
     name                 = "nginxdisk01"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
-    create_option        = "FromImage"
+    # create_option        = "FromImage"
   }
   source_image_reference {
     publisher = "Canonical"
