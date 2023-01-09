@@ -12,12 +12,12 @@ output "vnet_id" {
 
 }
 
-output "private IP" {
+output "private_IP" {
   value = azurerm_linux_virtual_machine.nginx.private_ip_address
 
 }
 
-output "public IP" {
+output "public_IP" {
   value = azurerm_linux_virtual_machine.nginx.public_ip_address
 
 }
